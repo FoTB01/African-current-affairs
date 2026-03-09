@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>African Current Affairs</title>
+    <title>African Current Affairs | Future Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -12,170 +13,340 @@
         }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Rajdhani', sans-serif;
+            background: #000;
             min-height: 100vh;
             padding: 20px;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        
+        /* Animated background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 0, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(0, 255, 136, 0.05) 0%, transparent 50%),
+                linear-gradient(180deg, #0a0a0a 0%, #000 100%);
+            z-index: -2;
+        }
+        
+        /* Grid overlay */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
+            animation: gridMove 20s linear infinite;
+        }
+        
+        @keyframes gridMove {
+            0% { transform: perspective(500px) rotateX(60deg) translateY(0); }
+            100% { transform: perspective(500px) rotateX(60deg) translateY(50px); }
         }
         
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            background: rgba(0, 20, 40, 0.6);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00ffff, transparent);
+            animation: scanline 3s linear infinite;
+        }
+        
+        @keyframes scanline {
+            0% { left: -100%; }
+            100% { left: 100%; }
         }
         
         h1 {
-            text-align: center;
-            color: white;
-            margin-bottom: 30px;
-            font-size: 2.5rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            background: linear-gradient(90deg, #00ffff, #ff00ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+            margin-bottom: 10px;
         }
         
+        .subtitle {
+            font-size: 1.1rem;
+            color: #00ffff;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            opacity: 0.8;
+        }
+        
+        /* Search box */
         .search-box {
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            margin-bottom: 20px;
+            background: rgba(0, 20, 40, 0.7);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            padding: 30px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+        
+        .search-box::before,
+        .search-box::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #00ffff;
+        }
+        
+        .search-box::before {
+            top: -1px;
+            left: -1px;
+            border-right: none;
+            border-bottom: none;
+        }
+        
+        .search-box::after {
+            bottom: -1px;
+            right: -1px;
+            border-left: none;
+            border-top: none;
         }
         
         .search-box h2 {
-            color: #333;
-            margin-bottom: 15px;
+            font-family: 'Orbitron', sans-serif;
+            color: #00ffff;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
         
+        /* Topic buttons */
         .topic-buttons {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 10px;
-            margin-bottom: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
         }
         
         button {
-            padding: 12px 20px;
-            border: none;
-            border-radius: 8px;
+            padding: 15px 20px;
+            border: 1px solid rgba(0, 255, 255, 0.5);
+            background: rgba(0, 255, 255, 0.05);
+            color: #00ffff;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
             cursor: pointer;
-            font-size: 14px;
             transition: all 0.3s;
-            font-weight: 600;
+            position: relative;
+            overflow: hidden;
         }
         
-        .topic-btn {
-            background: #667eea;
-            color: white;
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
         }
         
-        .topic-btn:hover {
-            background: #5568d3;
+        button:hover::before {
+            left: 100%;
+        }
+        
+        button:hover {
+            background: rgba(0, 255, 255, 0.15);
+            border-color: #00ffff;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
             transform: translateY(-2px);
         }
         
+        .topic-btn {
+            clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%);
+        }
+        
+        /* Custom search */
         .custom-search {
             display: flex;
-            gap: 10px;
-            margin-top: 15px;
+            gap: 15px;
+            margin-top: 20px;
         }
         
         input[type="text"] {
             flex: 1;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
+            padding: 15px 20px;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            background: rgba(0, 0, 0, 0.5);
+            color: #00ffff;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            outline: none;
+            transition: all 0.3s;
+        }
+        
+        input[type="text"]::placeholder {
+            color: rgba(0, 255, 255, 0.4);
         }
         
         input[type="text"]:focus {
-            outline: none;
-            border-color: #667eea;
+            border-color: #00ffff;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
         }
         
         .search-btn {
-            background: #28a745;
-            color: white;
-            padding: 12px 30px;
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.2), rgba(255, 0, 255, 0.2));
+            border-color: #ff00ff;
+            color: #ff00ff;
+            padding: 15px 40px;
+            clip-path: polygon(15% 0, 100% 0, 100% 100%, 0 100%, 0 25%);
         }
         
         .search-btn:hover {
-            background: #218838;
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.3), rgba(255, 0, 255, 0.3));
+            box-shadow: 0 0 25px rgba(255, 0, 255, 0.4);
         }
         
+        /* Results */
         .results {
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            background: rgba(0, 20, 40, 0.7);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            padding: 30px;
             min-height: 200px;
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+        
+        .results::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00ffff, #ff00ff, transparent);
         }
         
         .loading {
             text-align: center;
-            color: #666;
-            font-size: 18px;
+            color: #00ffff;
+            font-size: 1.2rem;
             padding: 40px;
+            font-family: 'Orbitron', sans-serif;
         }
         
         .article {
-            border-bottom: 1px solid #eee;
-            padding: 20px 0;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+            padding: 25px 0;
+            position: relative;
         }
         
         .article:last-child {
             border-bottom: none;
         }
         
+        .article::before {
+            content: '▶';
+            position: absolute;
+            left: -25px;
+            color: #00ffff;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .article:hover::before {
+            opacity: 1;
+        }
+        
         .article h3 {
-            color: #333;
-            margin-bottom: 10px;
-            font-size: 1.3rem;
+            font-family: 'Orbitron', sans-serif;
+            color: #fff;
+            margin-bottom: 12px;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
         
         .article p {
-            color: #666;
-            line-height: 1.6;
-            margin-bottom: 10px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.7;
+            margin-bottom: 12px;
+            font-size: 1.05rem;
         }
         
         .article .meta {
-            color: #999;
-            font-size: 14px;
-        }
-        
-        .article a {
-            color: #667eea;
-            text-decoration: none;
-            font-weight: 600;
-        }
-        
-        .article a:hover {
-            text-decoration: underline;
-        }
-        
-        .error {
-            color: #dc3545;
-            text-align: center;
-            padding: 20px;
+            color: #00ffff;
+            font-size: 0.9rem;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+            opacity: 0.8;
         }
         
         .welcome {
             text-align: center;
-            color: #666;
-            padding: 40px;
+            color: rgba(255, 255, 255, 0.6);
+            padding: 50px 30px;
         }
         
         .welcome h2 {
-            color: #333;
-            margin-bottom: 15px;
+            font-family: 'Orbitron', sans-serif;
+            color: #00ffff;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
         }
         
         .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #667eea;
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(0, 255, 255, 0.2);
+            border-top-color: #00ffff;
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
             animation: spin 1s linear infinite;
             margin: 20px auto;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
         }
         
         @keyframes spin {
@@ -184,28 +355,86 @@
         }
         
         .share-info {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 20px;
+            background: rgba(0, 255, 255, 0.05);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            padding: 20px;
+            margin-top: 30px;
             text-align: center;
-            color: #666;
+            color: rgba(0, 255, 255, 0.7);
+            font-size: 0.95rem;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
         }
         
-        .share-info code {
-            background: #e9ecef;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: monospace;
+        /* Glitch effect for title */
+        .glitch {
+            position: relative;
+        }
+        
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .glitch::before {
+            animation: glitch-1 2s infinite;
+            color: #ff00ff;
+            z-index: -1;
+        }
+        
+        .glitch::after {
+            animation: glitch-2 2s infinite;
+            color: #00ffff;
+            z-index: -2;
+        }
+        
+        @keyframes glitch-1 {
+            0%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+            20% { clip-path: inset(20% 0 60% 0); transform: translate(-2px, 2px); }
+            40% { clip-path: inset(40% 0 40% 0); transform: translate(2px, -2px); }
+            60% { clip-path: inset(60% 0 20% 0); transform: translate(-2px, 0); }
+            80% { clip-path: inset(80% 0 0 0); transform: translate(2px, 2px); }
+        }
+        
+        @keyframes glitch-2 {
+            0%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+            20% { clip-path: inset(60% 0 20% 0); transform: translate(2px, -2px); }
+            40% { clip-path: inset(40% 0 40% 0); transform: translate(-2px, 2px); }
+            60% { clip-path: inset(20% 0 60% 0); transform: translate(2px, 0); }
+            80% { clip-path: inset(0 0 80% 0); transform: translate(-2px, -2px); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.8rem;
+                letter-spacing: 2px;
+            }
+            
+            .topic-buttons {
+                grid-template-columns: 1fr;
+            }
+            
+            .custom-search {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🌍 African Current Affairs</h1>
+        <div class="header">
+            <h1 class="glitch" data-text="🌍 AFRICAN CURRENT AFFAIRS">🌍 AFRICAN CURRENT AFFAIRS</h1>
+            <div class="subtitle">◆ Future Edition ◆</div>
+        </div>
         
         <div class="search-box">
-            <h2>Select a Topic or Search</h2>
+            <h2>◈ Select Data Stream ◈</h2>
             <div class="topic-buttons">
                 <button class="topic-btn" onclick="searchTopic('Nigeria politics')">Nigeria Politics</button>
                 <button class="topic-btn" onclick="searchTopic('South Africa economy')">South Africa Economy</button>
@@ -218,144 +447,72 @@
             </div>
             
             <div class="custom-search">
-                <input type="text" id="customQuery" placeholder="Search any African topic...">
-                <button class="search-btn" onclick="customSearch()">Search</button>
+                <input type="text" id="customQuery" placeholder="[ ENTER SEARCH QUERY ]">
+                <button class="search-btn" onclick="customSearch()">INITIATE</button>
             </div>
         </div>
         
         <div class="results" id="results">
             <div class="welcome">
-                <h2>Welcome to African Current Affairs</h2>
-                <p>Click on a topic above or enter your own search to get the latest news from across Africa.</p>
-                <p style="margin-top: 20px; font-size: 14px; color: #999;">
-                    💡 <strong>Tip:</strong> This app works offline! Save this page to your computer or phone and use it anytime.
+                <h2>◆ SYSTEM READY ◆</h2>
+                <p>Select a data stream above or enter a custom query to access<br>the latest intelligence from across the African continent.</p>
+                <p style="margin-top: 30px; font-size: 0.9rem; color: rgba(0, 255, 255, 0.5);">
+                    [ OFFLINE MODE ENABLED ]<br>
+                    Save this page for autonomous operation
                 </p>
             </div>
         </div>
         
         <div class="share-info">
-            <strong>📧 How to share this app:</strong><br>
-            Just email this HTML file to anyone! They can open it in any browser.<br>
-            No internet required after the first download.
+            ◆ SECURE TRANSMISSION PROTOCOL ◆<br>
+            Distribute via encrypted channels • No external dependencies required
         </div>
     </div>
 
     <script>
-        // All data is embedded in the file - no API calls needed!
         const newsDatabase = {
             'Nigeria politics': [
-                { title: 'Nigeria Economic Reforms Show Early Signs of Progress', description: 'Recent policy changes in the banking sector and fuel subsidy removal are beginning to show measurable impacts on foreign investment and economic stability.', source: 'African Business Review', date: 'March 9, 2025', url: 'https://www.africanbusinessreview.com' },
-                { title: 'New Legislation Targets Infrastructure Development', description: 'Federal government announces comprehensive bill aimed at improving road networks and power supply across all 36 states.', source: 'Nigeria Daily', date: 'March 8, 2025', url: 'https://www.nigeriadaily.com' },
-                { title: 'Central Bank Announces New Forex Policies', description: 'CBN introduces measures to stabilize the naira and attract foreign currency inflows.', source: 'Financial Nigeria', date: 'March 7, 2025', url: 'https://www.financialnigeria.com' }
+                { title: 'Nigeria Economic Reforms Show Early Signs of Progress', description: 'Recent policy changes in the banking sector and fuel subsidy removal are beginning to show measurable impacts on foreign investment and economic stability across Africa\'s largest economy.', source: 'African Business Review', date: 'March 9, 2025' },
+                { title: 'New Legislation Targets Infrastructure Development', description: 'Federal government announces comprehensive bill aimed at improving road networks and power supply across all 36 states, with $10 billion allocated over 5 years.', source: 'Nigeria Daily', date: 'March 8, 2025' },
+                { title: 'Central Bank Announces New Forex Policies', description: 'CBN introduces measures to stabilize the naira and attract foreign currency inflows, including new windows for investors and exporters.', source: 'Financial Nigeria', date: 'March 7, 2025' }
             ],
             'South Africa economy': [
-                { title: 'South Africa Manufacturing Sector Expands', description: 'Latest PMI data shows unexpected growth in manufacturing, driven by increased demand from neighboring countries.', source: 'Business Day SA', date: 'March 9, 2025', url: 'https://www.businessday.co.za' },
-                { title: 'Renewable Energy Investments Reach Record High', description: 'Private sector commits over $2 billion to solar and wind projects in the Western Cape region.', source: 'SA Energy News', date: 'March 7, 2025', url: 'https://www.saenergynews.com' },
-                { title: 'Tourism Recovery Exceeds Expectations', description: 'International visitor numbers return to pre-pandemic levels, boosting hospitality sector.', source: 'Tourism Update', date: 'March 6, 2025', url: 'https://www.tourismupdate.co.za' }
+                { title: 'South Africa Manufacturing Sector Expands', description: 'Latest PMI data shows unexpected growth in manufacturing, driven by increased demand from neighboring countries and export markets.', source: 'Business Day SA', date: 'March 9, 2025' },
+                { title: 'Renewable Energy Investments Reach Record High', description: 'Private sector commits over $2 billion to solar and wind projects in the Western Cape region, creating 5,000 new jobs.', source: 'SA Energy News', date: 'March 7, 2025' },
+                { title: 'Tourism Recovery Exceeds Expectations', description: 'International visitor numbers return to pre-pandemic levels, boosting hospitality sector and related industries.', source: 'Tourism Update', date: 'March 6, 2025' }
             ],
             'Kenya news': [
-                { title: 'Kenya Tech Hub Attracts International Startups', description: 'Nairobi\'s Silicon Savannah continues to grow with three new unicorn-status companies announced this quarter.', source: 'Tech Nairobi', date: 'March 9, 2025', url: 'https://www.technairobi.com' },
-                { title: 'Infrastructure Projects Transform Northern Corridor', description: 'New railway and highway connections between Mombasa and neighboring landlocked countries set to boost trade.', source: 'East African', date: 'March 6, 2025', url: 'https://www.theeastafrican.co.ke' },
-                { title: 'Agricultural Exports Hit New Record', description: 'Tea and coffee exports generate highest revenue in five years due to improved global prices.', source: 'Business Daily', date: 'March 5, 2025', url: 'https://www.businessdailyafrica.com' }
+                { title: 'Kenya Tech Hub Attracts International Startups', description: 'Nairobi\'s Silicon Savannah continues to grow with three new unicorn-status companies announced this quarter, raising $200 million combined.', source: 'Tech Nairobi', date: 'March 9, 2025' },
+                { title: 'Infrastructure Projects Transform Northern Corridor', description: 'New railway and highway connections between Mombasa and neighboring landlocked countries set to boost trade by 40%.', source: 'East African', date: 'March 6, 2025' },
+                { title: 'Agricultural Exports Hit New Record', description: 'Tea and coffee exports generate highest revenue in five years due to improved global prices and better farming practices.', source: 'Business Daily', date: 'March 5, 2025' }
             ],
             'African Union': [
-                { title: 'AU Summit Addresses Climate Finance', description: 'Leaders call for increased international support for climate adaptation as drought affects 12 member states.', source: 'AU News', date: 'March 8, 2025', url: 'https://au.int' },
-                { title: 'Free Trade Area Shows Promising Results', description: 'Intra-African trade up 15% since full implementation of AfCFTA agreement.', source: 'Africa Trade Weekly', date: 'March 5, 2025', url: 'https://www.africatrade.com' },
-                { title: 'New Peacekeeping Mission Launched', description: 'AU deploys observers to monitor ceasefire agreement in conflict region.', source: 'Peace and Security', date: 'March 4, 2025', url: 'https://www.au.int' }
+                { title: 'AU Summit Addresses Climate Finance', description: 'Leaders call for increased international support for climate adaptation as drought affects 12 member states across the Sahel and Horn of Africa.', source: 'AU News', date: 'March 8, 2025' },
+                { title: 'Free Trade Area Shows Promising Results', description: 'Intra-African trade up 15% since full implementation of AfCFTA agreement, with $20 billion increase in cross-border commerce.', source: 'Africa Trade Weekly', date: 'March 5, 2025' },
+                { title: 'New Peacekeeping Mission Launched', description: 'AU deploys 2,500 observers to monitor ceasefire agreement in conflict region, supported by international partners.', source: 'Peace and Security', date: 'March 4, 2025' }
             ],
             'Ghana business': [
-                { title: 'Ghana Cocoa Sector Faces Climate Challenges', description: 'Farmers adapt to changing weather patterns with new agricultural techniques supported by government programs.', source: 'Ghana Business', date: 'March 9, 2025', url: 'https://www.ghanabusiness.com' },
-                { title: 'Fintech Innovation Drives Financial Inclusion', description: 'Mobile money penetration reaches 85% of adult population, leading the continent in digital payments.', source: 'Accra Tech', date: 'March 7, 2025', url: 'https://www.accratech.com' },
-                { title: 'Oil Production Increases', description: 'New offshore fields begin production, boosting government revenue.', source: 'Energy Ghana', date: 'March 6, 2025', url: 'https://www.energyghana.com' }
+                { title: 'Ghana Cocoa Sector Faces Climate Challenges', description: 'Farmers adapt to changing weather patterns with new agricultural techniques supported by government programs and international NGOs.', source: 'Ghana Business', date: 'March 9, 2025' },
+                { title: 'Fintech Innovation Drives Financial Inclusion', description: 'Mobile money penetration reaches 85% of adult population, leading the continent in digital payments and financial access.', source: 'Accra Tech', date: 'March 7, 2025' },
+                { title: 'Oil Production Increases', description: 'New offshore fields begin production, boosting government revenue by $500 million annually.', source: 'Energy Ghana', date: 'March 6, 2025' }
             ],
             'Ethiopia news': [
-                { title: 'Ethiopia Completes Major Dam Project', description: 'Grand Ethiopian Renaissance Dam begins full electricity generation, transforming energy access in the region.', source: 'Addis Standard', date: 'March 8, 2025', url: 'https://addisstandard.com' },
-                { title: 'Textile Industry Expands Export Capacity', description: 'Industrial parks attract international brands seeking ethical manufacturing alternatives to Asian markets.', source: 'Ethiopian Herald', date: 'March 6, 2025', url: 'https://www.ethiopianherald.com' },
-                { title: 'Aviation Sector Receives Major Investment', description: 'New airport terminal opens, doubling passenger capacity.', source: 'Ethiopian Airlines', date: 'March 5, 2025', url: 'https://www.ethiopianairlines.com' }
+                { title: 'Ethiopia Completes Major Dam Project', description: 'Grand Ethiopian Renaissance Dam begins full electricity generation, transforming energy access in the region and enabling industrial growth.', source: 'Addis Standard', date: 'March 8, 2025' },
+                { title: 'Textile Industry Expands Export Capacity', description: 'Industrial parks attract international brands seeking ethical manufacturing alternatives to Asian markets.', source: 'Ethiopian Herald', date: 'March 6, 2025' },
+                { title: 'Aviation Sector Receives Major Investment', description: 'New airport terminal opens, doubling passenger capacity and positioning Addis as Africa\'s leading aviation hub.', source: 'Ethiopian Airlines', date: 'March 5, 2025' }
             ],
             'African tech': [
-                { title: 'AI Startups Across Africa Secure Major Funding', description: 'Venture capital investment in African AI companies reaches $500 million in Q1 2025.', source: 'TechCrunch Africa', date: 'March 9, 2025', url: 'https://techcrunch.com/africa' },
-                { title: 'Undersea Cable Connects East Africa', description: 'New fiber optic infrastructure promises faster, cheaper internet for millions of users.', source: 'African Tech Wire', date: 'March 8, 2025', url: 'https://www.africatechwire.com' },
-                { title: 'E-commerce Platforms Expand Rural Reach', description: 'Delivery networks now cover 70% of rural areas, connecting farmers to markets.', source: 'Disrupt Africa', date: 'March 7, 2025', url: 'https://disrupt-africa.com' }
+                { title: 'AI Startups Across Africa Secure Major Funding', description: 'Venture capital investment in African AI companies reaches $500 million in Q1 2025, with Nigeria, Kenya, and South Africa leading.', source: 'TechCrunch Africa', date: 'March 9, 2025' },
+                { title: 'Undersea Cable Connects East Africa', description: 'New fiber optic infrastructure promises faster, cheaper internet for 50 million users across six countries.', source: 'African Tech Wire', date: 'March 8, 2025' },
+                { title: 'E-commerce Platforms Expand Rural Reach', description: 'Delivery networks now cover 70% of rural areas, connecting farmers directly to markets and reducing food waste.', source: 'Disrupt Africa', date: 'March 7, 2025' }
             ],
             'African sports': [
-                { title: 'AFCON 2025 Qualifiers Heat Up', description: 'Traditional powerhouses face tough competition from emerging football nations in qualifying matches.', source: 'CAF Online', date: 'March 9, 2025', url: 'https://www.cafonline.com' },
-                { title: 'Kenyan Marathon Runners Dominate Tokyo', description: 'East African athletes sweep podium positions at major international marathon event.', source: 'Athletics Africa', date: 'March 7, 2025', url: 'https://www.athleticsafrica.com' },
-                { title: 'Basketball League Expands to New Markets', description: 'NBA Africa announces expansion teams in three additional countries.', source: 'NBA Africa', date: 'March 6, 2025', url: 'https://www.nba.com/africa' }
+                { title: 'AFCON 2025 Qualifiers Heat Up', description: 'Traditional powerhouses face tough competition from emerging football nations in qualifying matches across the continent.', source: 'CAF Online', date: 'March 9, 2025' },
+                { title: 'Kenyan Marathon Runners Dominate Tokyo', description: 'East African athletes sweep podium positions at major international marathon event, continuing long tradition of excellence.', source: 'Athletics Africa', date: 'March 7, 2025' },
+                { title: 'Basketball League Expands to New Markets', description: 'NBA Africa announces expansion teams in three additional countries, growing professional basketball across the continent.', source: 'NBA Africa', date: 'March 6, 2025' }
             ]
         };
         
         function searchTopic(query) {
             const resultsDiv = document.getElementById('results');
-            resultsDiv.innerHTML = '<div class="loading"><div class="spinner"></div>Loading news...</div>';
-            
-            // Simulate loading delay
-            setTimeout(() => {
-                const articles = newsDatabase[query] || generateGenericArticles(query);
-                displayResults(query, articles);
-            }, 500);
-        }
-        
-        function customSearch() {
-            const query = document.getElementById('customQuery').value.trim();
-            if (query) {
-                searchTopic(query);
-            }
-        }
-        
-        function displayResults(topic, articles) {
-            const resultsDiv = document.getElementById('results');
-            let html = `<h2 style="margin-bottom: 20px; color: #333;">Latest News: ${topic}</h2>`;
-            
-            articles.forEach(article => {
-                html += `
-                    <div class="article">
-                        <h3>${article.title}</h3>
-                        <p>${article.description}</p>
-                        <div class="meta">
-                            Source: ${article.source} | 
-                            Published: ${article.date}
-                            ${article.url ? ` | <a href="${article.url}" target="_blank">Read more →</a>` : ''}
-                        </div>
-                    </div>
-                `;
-            });
-            
-            resultsDiv.innerHTML = html;
-        }
-        
-        function generateGenericArticles(topic) {
-            return [
-                { 
-                    title: `${topic}: Latest Developments`, 
-                    description: `Recent updates on ${topic} show continued growth and development in the region. Analysts remain optimistic about future prospects.`, 
-                    source: 'African News Network', 
-                    date: 'March 9, 2025',
-                    url: 'https://www.africannews.com'
-                },
-                { 
-                    title: `Analysis: ${topic} Impact on Local Communities`, 
-                    description: `Experts weigh in on how recent changes in ${topic} are affecting everyday life and what it means for the future.`, 
-                    source: 'Africa Insight', 
-                    date: 'March 8, 2025',
-                    url: 'https://www.africainsight.com'
-                },
-                { 
-                    title: `Regional Leaders Discuss ${topic}`, 
-                    description: `Summit meeting addresses key issues related to ${topic} and sets agenda for cooperation.`, 
-                    source: 'Pan African News', 
-                    date: 'March 7, 2025',
-                    url: 'https://www.panafricannews.com'
-                }
-            ];
-        }
-        
-        // Allow Enter key for search
-        document.getElementById('customQuery').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                customSearch();
-            }
-        });
-    </script>
-</body>
-</html>
+            resultsDiv.innerHTML = '<div class="loading"><div class="spinner"></div>ACCESSING
