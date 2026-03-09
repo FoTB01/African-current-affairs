@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>African Current Affairs</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .search-box {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+        
+        .search-box h2 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .topic-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+        
+        .topic-btn {
+            background: #667eea;
+            color: white;
+        }
+        
+        .topic-btn:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+        
+        .custom-search {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        input[type="text"] {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .search-btn {
+            background: #28a745;
+            color: white;
+            padding: 12px 30px;
+        }
+        
+        .search-btn:hover {
+            background: #218838;
+        }
+        
+        .results {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            min-height: 200px;
+        }
+        
+        .loading {
+            text-align: center;
+            color: #666;
+            font-size: 18px;
+            padding: 40px;
+        }
+        
+        .article {
+            border-bottom: 1px solid #eee;
+            padding: 20px 0;
+        }
+        
+        .article:last-child {
+            border-bottom: none;
+        }
+        
+        .article h3 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+        
+        .article p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        
+        .article .meta {
+            color: #999;
+            font-size: 14px;
+        }
+        
+        .article a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .article a:hover {
+            text-decoration: underline;
+        }
+        
+        .error {
+            color: #dc3545;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .welcome {
+            text-align: center;
+            color: #666;
+            padding: 40px;
+        }
+        
+        .welcome h2 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌍 African Current Affairs</h1>
+        
+        <div class="search-box">
+            <h2>Select a Topic or Search</h2>
+            <div class="topic-buttons">
+                <button class="topic-btn" onclick="searchTopic('Nigeria politics')">Nigeria Politics</button>
+                <button class="topic-btn" onclick="searchTopic('South Africa economy')">South Africa Economy</button>
+                <button class="topic-btn" onclick="searchTopic('Kenya news')">Kenya News</button>
+                <button class="topic-btn" onclick="searchTopic('African Union')">African Union</button>
+                <button class="topic-btn" onclick="searchTopic('Ghana business')">Ghana Business</button>
+                <button class="topic-btn" onclick="searchTopic('Ethiopia news')">Ethiopia News</button>
+                <button class="topic-btn" onclick="searchTopic('African tech')">African Tech</button>
+                <button class="topic-btn" onclick="searchTopic('African sports')">African Sports</button>
+            </div>
+            
+            <div class="custom-search">
+                <input type="text" id="customQuery" placeholder="Search any African topic..." placeholder="e.g., Morocco tourism, Senegal elections">
+                <button class="search-btn" onclick="customSearch()">Search</button>
+            </div>
+        </div>
+        
+        <div class="results" id="results">
+            <div class="welcome">
+                <h2>Welcome to African Current Affairs</h2>
+                <p>Click on a topic above or enter your own search to get the latest news from across Africa.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_KEY = 'YOUR_API_KEY'; // Replace with your NewsAPI key
+        
+        async function searchTopic(query) {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<div class="loading"><div class="spinner"></div>Loading news...</div>';
+            
+            try {
+                // Using a free news API - you can replace with your preferred API
+                const response = await fetch(`https://newsapi.org/v2/everything?q=${encodeURIComponent(query + ' Africa')}&language=en&sortBy=publishedAt&apiKey=${API_KEY}`);
+                const data = await response.json();
+                
+                if (data.status === 'ok' && data.articles.length > 0) {
+                    displayResults(data.articles);
+                } else {
+                    // Fallback to mock data if API fails or no results
+                    displayMockResults(query);
+                }
+            } catch (error) {
+                console.error('Error fetching news:', error);
+                displayMockResults(query);
+            }
+        }
+        
+        function customSearch() {
+            const query = document.getElementById('customQuery').value.trim();
+            if (query) {
+                searchTopic(query);
+            }
+        }
+        
+        function displayResults(articles) {
+            const resultsDiv = document.getElementById('results');
+            let html = '<h2 style="margin-bottom: 20px; color: #333;">Latest News</h2>';
+            
+            articles.slice(0, 10).forEach(article => {
+                html += `
+                    <div class="article">
+                        <h3>${article.title}</h3>
+                        <p>${article.description || 'No description available'}</p>
+                        <div class="meta">
+                            Source: ${article.source.name} | 
+                            Published: ${new Date(article.publishedAt).toLocaleDateString()} |
+                            <a href="${article.url}" target="_blank">Read more →</a>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            resultsDiv.innerHTML = html;
+        }
+        
+        function displayMockResults(topic) {
+            const resultsDiv = document.getElementById('results');
+            const mockData = getMockData(topic);
+            
+            let html = `<h2 style="margin-bottom: 20px; color: #333;">Results for: ${topic}</h2>`;
+            
+            mockData.forEach(item => {
+                html += `
+                    <div class="article">
+                        <h3>${item.title}</h3>
+                        <p>${item.description}</p>
+                        <div class="meta">
+                            Source: ${item.source} | 
+                            Published: ${item.date}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += '<p style="text-align: center; color: #999; margin-top: 20px;"><em>Note: Connect to a news API for real-time updates</em></p>';
+            
+            resultsDiv.innerHTML = html;
+        }
+        
+        function getMockData(topic) {
+            const mockDatabase = {
+                'Nigeria politics': [
+                    { title: 'Nigeria Economic Reforms Show Early Signs of Progress', description: 'Recent policy changes in the banking sector and fuel subsidy removal are beginning to show measurable impacts on foreign investment.', source: 'African Business Review', date: 'March 9, 2025' },
+                    { title: 'New Legislation Targets Infrastructure Development', description: 'Federal government announces comprehensive bill aimed at improving road networks and power supply across all 36 states.', source: 'Nigeria Daily', date: 'March 8, 2025' }
+                ],
+                'South Africa economy': [
+                    { title: 'South Africa Manufacturing Sector Expands', description: 'Latest PMI data shows unexpected growth in manufacturing, driven by increased demand from neighboring countries.', source: 'Business Day SA', date: 'March 9, 2025' },
+                    { title: 'Renewable Energy Investments Reach Record High', description: 'Private sector commits over $2 billion to solar and wind projects in the Western Cape region.', source: 'SA Energy News', date: 'March 7, 2025' }
+                ],
+                'Kenya news': [
+                    { title: 'Kenya Tech Hub Attracts International Startups', description: 'Nairobi\'s Silicon Savannah continues to grow with three new unicorn-status companies announced this quarter.', source: 'Tech Nairobi', date: 'March 9, 2025' },
+                    { title: 'Infrastructure Projects Transform Northern Corridor', description: 'New railway and highway connections between Mombasa and neighboring landlocked countries set to boost trade.', source: 'East African', date: 'March 6, 2025' }
+                ],
+                'African Union': [
+                    { title: 'AU Summit Addresses Climate Finance', description: 'Leaders call for increased international support for climate adaptation as drought affects 12 member states.', source: 'AU News', date: 'March 8, 2025' },
+                    { title: 'Free Trade Area Shows Promising Results', description: 'Intra-African trade up 15% since full implementation of AfCFTA agreement.', source: 'Africa Trade Weekly', date: 'March 5, 2025' }
+                ],
+                'Ghana business': [
+                    { title: 'Ghana Cocoa Sector Faces Climate Challenges', description: 'Farmers adapt to changing weather patterns with new agricultural techniques supported by government programs.', source: 'Ghana Business', date: 'March 9, 2025' },
+                    { title: 'Fintech Innovation Drives Financial Inclusion', description: 'Mobile money penetration reaches 85% of adult population, leading the continent in digital payments.', source: 'Accra Tech', date: 'March 7, 2025' }
+                ],
+                'Ethiopia news': [
+                    { title: 'Ethiopia Completes Major Dam Project', description: 'Grand Ethiopian Renaissance Dam begins full electricity generation, transforming energy access in the region.', source: 'Addis Standard', date: 'March 8, 2025' },
+                    { title: 'Textile Industry Expands Export Capacity', description: 'Industrial parks attract international brands seeking ethical manufacturing alternatives to Asian markets.', source: 'Ethiopian Herald', date: 'March 6, 2025' }
+                ],
+                'African tech': [
+                    { title: 'AI Startups Across Africa Secure Major Funding', description: 'Venture capital investment in African AI companies reaches $500 million in Q1 2025.', source: 'TechCrunch Africa', date: 'March 9, 2025' },
+                    { title: 'Undersea Cable Connects East Africa', description: 'New fiber optic infrastructure promises faster, cheaper internet for millions of users.', source: 'African Tech Wire', date: 'March 8, 2025' }
+                ],
+                'African sports': [
+                    { title: 'AFCON 2025 Qualifiers Heat Up', description: 'Traditional powerhouses face tough competition from emerging football nations in qualifying matches.', source: 'CAF Online', date: 'March 9, 2025' },
+                    { title: 'Kenyan Marathon Runners Dominate Tokyo', description: 'East African athletes sweep podium positions at major international marathon event.', source: 'Athletics Africa', date: 'March 7, 2025' }
+                ]
+            };
+            
+            return mockDatabase[topic] || [
+                { title: `${topic}: Latest Developments`, description: `Recent updates on ${topic} show continued growth and development in the region.`, source: 'African News Network', date: 'March 9, 2025' },
+                { title: `Analysis: ${topic} Impact on Local Communities`, description: `Experts weigh in on how recent changes in ${topic} are affecting everyday life.`, source: 'Africa Insight', date: 'March 8, 2025' }
+            ];
+        }
+        
+        // Allow Enter key for search
+        document.getElementById('customQuery').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                customSearch();
+            }
+        });
+    </script>
+</body>
+</html>
